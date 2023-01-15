@@ -29,8 +29,8 @@ def prepare_city_blocks():
             'type': 'FeatureCollection',
             'features': []
         }
-    for i in os.listdir('./cetvrti'):
-        with open(os.path.join('./cetvrti', i), 'r') as file:
+    for i in os.listdir('./blocks'):
+        with open(os.path.join('./blocks', i), 'r') as file:
             tmp = {
                 'type': 'Feature',
                 'id': i.split('.')[0],
@@ -46,8 +46,8 @@ def prepare_city_blocks():
 @st.cache
 def prepare_poligons():
     poligons = dict()
-    for i in os.listdir('./cetvrti'):
-        with open(os.path.join('./cetvrti', i), 'r') as file:
+    for i in os.listdir('./blocks'):
+        with open(os.path.join('./blocks', i), 'r') as file:
             poligons[i.split('.')[0]] = shape(json.load(file))
 
     return poligons
@@ -66,8 +66,6 @@ if 'poligons' not in st.session_state:
 
 st.session_state.data, st.session_state.ind, st.session_state.colors =  prepare_data()
 
-
-col1, col2 = st.columns(2)
 
 to_add_group = []
 
@@ -117,6 +115,8 @@ with st.form('forma'):
         st.session_state.changed = True
         st.session_state.scores = scores
 
+
+col1, col2 = st.columns(2)
 with col1:
         # Mapa 1
     st.header('Map')
