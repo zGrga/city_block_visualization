@@ -77,8 +77,10 @@ with st.form('forma'):
     l = len(pd.unique(st.session_state.data.loc[:, 'class']))
     sl = st.columns(l)
     sliders = dict()
+    # colors = ['FF9999', 'CCFFCC', '99CCFF', 'FFFF99', 'FFCCFF']
     for index, i in enumerate(pd.unique(st.session_state.data.loc[:, 'class'])):
         with sl[index]:
+            # st.markdown(f'<p style="font-family:Sans-serif; text-shadow: 0 0 2px #000; color:#{colors[index]}; font-size: 25px;">{i}</p>', unsafe_allow_html=True)
             sliders[i] = st.slider(f'{i}', 0, 5)
 
     button = st.form_submit_button('Submit')
@@ -114,6 +116,15 @@ with st.form('forma'):
         folium.GeoJsonTooltip(['name', 'value']).add_to(c.geojson)
         st.session_state.changed = True
         st.session_state.scores = scores
+
+st.header('Boje na mapi')
+l = len(pd.unique(st.session_state.data.loc[:, 'class']))
+sl = st.columns(l)
+colors = ['FF9999', 'CCFFCC', '99CCFF', 'FFFF99', 'FFCCFF']
+for index, i in enumerate(pd.unique(st.session_state.data.loc[:, 'class'])):
+    with sl[index]:
+        st.markdown(f'<p style="font-family:Sans-serif; text-shadow: 0 0 2px #000; color:#{colors[index]}; font-size: 25px;">{i}</p>', unsafe_allow_html=True)
+            
 
 
 col1, col2 = st.columns(2)
