@@ -8,6 +8,7 @@ import json
 from shapely.geometry.polygon import Polygon
 from folium.plugins import FloatImage
 from shapely.geometry import shape, Point
+import base64
 
 from streamlit_folium import st_folium, folium_static
 st.set_page_config(layout="wide")
@@ -119,14 +120,9 @@ with st.form('forma'):
         st.session_state.scores = scores
 
 
-col1, col2, col3 = st.columns([1, 4, 4])
+col1, col2 = st.columns(2)
+
 with col1:
-    colors = ['FF9999', 'CCFFCC', '99CCFF', 'FFFF99', 'FFCCFF']
-    st.header('Legenda')
-    # for index, i in enumerate(pd.unique(st.session_state.data.loc[:, 'class'])):
-    #     st.markdown(f'<p style="font-family:Sans-serif; text-shadow: 0 0 2px #000; color:#{colors[index]}; font-size: 20px;">{i}</p>', unsafe_allow_html=True)
-    st.image('legend.png')
-with col2:
         # Mapa 1
     st.header('Map')
 
@@ -134,6 +130,17 @@ with col2:
 
     with st.spinner('Creating a map'):
         m = folium.Map(location=[45.8167, 15.9833], zoom_start=10, tiles='cartodbpositron')
+        # ----
+        with open('legend.png', 'rb') as lf:
+            # open in binary mode, read bytes, encode, decode obtained bytes as utf-8 string
+            b64_content = base64.b64encode(lf.read()).decode('utf-8')
+
+        FloatImage('data:image/png;base64,{}'.format(b64_content), bottom=0, left=0).add_to(m)
+
+
+
+        # ---
+        FloatImage('legend.png', bottom=0, left=150).add_to(m)
 
         c = folium.Choropleth(geo_data=st.session_state.city_blocks,
                                 key_on='feature.id',
@@ -162,9 +169,9 @@ with col2:
         
         folium.LayerControl().add_to(m)
 
-        st_data = folium_static(m, width=570)
+        st_data = folium_static(m, width=650)
 
-with col3:
+with col2:
     st.header('City blocks')
 
     st.write('On this map the scores of each city block will be visualized.')
