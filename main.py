@@ -153,7 +153,7 @@ with col1:
         
         folium.LayerControl().add_to(m)
 
-        st_data = folium_static(m, width=850)
+        st_data = folium_static(m, width=650)
 
 with col2:
     st.header('City blocks')
@@ -171,7 +171,7 @@ with col2:
     else:
         st.session_state.changed = False
 
-    st_data_2 = folium_static(st.session_state.m2, width=850)
+    st_data_2 = folium_static(st.session_state.m2, width=650)
 
 
 if 'scores' in st.session_state:
