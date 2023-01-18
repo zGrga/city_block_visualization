@@ -6,6 +6,7 @@ from itertools import permutations
 import os
 import json
 from shapely.geometry.polygon import Polygon
+from folium.plugins import FloatImage
 from shapely.geometry import shape, Point
 
 from streamlit_folium import st_folium, folium_static
@@ -117,18 +118,15 @@ with st.form('forma'):
         st.session_state.changed = True
         st.session_state.scores = scores
 
-st.header('Boje na mapi')
-l = len(pd.unique(st.session_state.data.loc[:, 'class']))
-sl = st.columns(l)
-colors = ['FF9999', 'CCFFCC', '99CCFF', 'FFFF99', 'FFCCFF']
-for index, i in enumerate(pd.unique(st.session_state.data.loc[:, 'class'])):
-    with sl[index]:
-        st.markdown(f'<p style="font-family:Sans-serif; text-shadow: 0 0 2px #000; color:#{colors[index]}; font-size: 25px;">{i}</p>', unsafe_allow_html=True)
-            
 
-
-col1, col2 = st.columns(2)
+col1, col2, col3 = st.columns([1, 4, 4])
 with col1:
+    colors = ['FF9999', 'CCFFCC', '99CCFF', 'FFFF99', 'FFCCFF']
+    st.header('Legenda')
+    # for index, i in enumerate(pd.unique(st.session_state.data.loc[:, 'class'])):
+    #     st.markdown(f'<p style="font-family:Sans-serif; text-shadow: 0 0 2px #000; color:#{colors[index]}; font-size: 20px;">{i}</p>', unsafe_allow_html=True)
+    st.image('legend.png')
+with col2:
         # Mapa 1
     st.header('Map')
 
@@ -164,9 +162,9 @@ with col1:
         
         folium.LayerControl().add_to(m)
 
-        st_data = folium_static(m, width=650)
+        st_data = folium_static(m, width=570)
 
-with col2:
+with col3:
     st.header('City blocks')
 
     st.write('On this map the scores of each city block will be visualized.')
